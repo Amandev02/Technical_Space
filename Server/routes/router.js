@@ -161,7 +161,7 @@ router.put('/update/:id', authenticate, async (request, response) => {
     }
 });
 
-router.delete('/delete/:id', authenticate, async (request, response) => {
+router.delete('/delete/:id', async (request, response) => {
     try {
         const post = await Post.findById(request.params.id);
         
