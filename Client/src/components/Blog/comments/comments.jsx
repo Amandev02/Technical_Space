@@ -23,7 +23,7 @@ const Image = styled('img')({
     borderRadius: '50%'
 });
 
-const StyledTextArea = styled()`
+const StyledTextArea = styled(TextareaAutosize)`
     height: 100px !important;
     width: 100% !important; 
     margin: 0 20px;
