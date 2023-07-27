@@ -66,8 +66,8 @@ const Update = () => {
     
     useEffect(() => {
         const fetchData = async () => {
-            // let response = await fetch('http://localhost:8000/blog/details'+'/'+ id ,{method: 'GET',headers:{ id : id || '' }});
-            const response = await fetch("http://localhost:8000/post"+'/'+ id , {
+            // let response = await fetch('https://technical-space-w69w.vercel.app/blog/details'+'/'+ id ,{method: 'GET',headers:{ id : id || '' }});
+            const response = await fetch("https://technical-space-w69w.vercel.app/post"+'/'+ id , {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -112,7 +112,7 @@ const Update = () => {
             },
           };
         //   console.log(post);
-        await axios.put(`http://localhost:8000/update/${id}`,post,{config})
+        await axios.put(`https://technical-space-w69w.vercel.app/update/${id}`,post,{config})
         // await API.updatePost(post); 
         navigate(`/blog/details/${id}`)
        

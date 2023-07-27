@@ -72,8 +72,8 @@ const DetailView = () => {
         console.log({logindata});
 
         const fetchData = async () => {
-            // let response = await axios.get("http://localhost:8000//post/id");
-            let response = await fetch('http://localhost:8000/post'+'/'+id ,{method: 'GET',headers:{ id : id || '' }});
+            // let response = await axios.get("https://technical-space-w69w.vercel.app//post/id");
+            let response = await fetch('https://technical-space-w69w.vercel.app/post'+'/'+id ,{method: 'GET',headers:{ id : id || '' }});
             
             const data = await response.json();
             // console.log(data);
@@ -102,7 +102,7 @@ const DetailView = () => {
 
     const deleteBlog = async () => {  
 
-        const res = await axios.delete('http://localhost:8000/delete'+'/'+ id , { 
+        const res = await axios.delete('https://technical-space-w69w.vercel.app/delete'+'/'+ id , { 
         headers: {
             "Authorization": token
         }

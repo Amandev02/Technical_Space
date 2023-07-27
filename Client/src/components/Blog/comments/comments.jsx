@@ -50,7 +50,7 @@ const Comments = ({ post }) => {
     useEffect(() => {
         const getData = async () => {
             const id = post._id;
-            let response = await fetch(`http://localhost:8000/comments/${id}` ,{method: 'GET',headers:{ id : id ,"Content-Type": "application/json",
+            let response = await fetch(`https://technical-space-w69w.vercel.app/comments/${id}` ,{method: 'GET',headers:{ id : id ,"Content-Type": "application/json",
             "Authorization": token }});
              const data = await response.json();
              console.log(data);
@@ -84,7 +84,7 @@ const Comments = ({ post }) => {
           };
 
         await axios
-        .post("http://localhost:8000/comment/new", comment, config)
+        .post("https://technical-space-w69w.vercel.app/comment/new", comment, config)
         .then((res) => {
           toast.success("Comment Added Sucessfully",{ autoClose: 2000});
            console.log(res)

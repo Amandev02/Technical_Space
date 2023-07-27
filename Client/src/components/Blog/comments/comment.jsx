@@ -42,7 +42,7 @@ const Comment = ({ comment, setToggle }) => {
     const removeComment = async () => {
 
         const id = comment._id;
-        const res = await axios.delete(`http://localhost:8000/comment/delete/${comment._id}`, { 
+        const res = await axios.delete(`https://technical-space-w69w.vercel.app/comment/delete/${comment._id}`, { 
             headers: {
                 "Authorization": token
             }

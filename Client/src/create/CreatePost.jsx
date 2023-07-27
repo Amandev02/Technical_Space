@@ -71,7 +71,7 @@ const CreatePost = () => {
      const DashboardValid = async () => {
         let token = localStorage.getItem("usersdatatoken");
     
-        const res = await fetch("http://localhost:8000/validuser", {
+        const res = await fetch("https://technical-space-w69w.vercel.app/validuser", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -137,7 +137,7 @@ const CreatePost = () => {
        post
       };
       await axios
-        .post("http://localhost:8000/create", body, config)
+        .post("https://technical-space-w69w.vercel.app/create", body, config)
         .then((res) => {
           toast.success("Post Added Sucessfully",{ autoClose: 2000});
            console.log(res.data.message)
