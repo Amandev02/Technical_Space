@@ -65,8 +65,7 @@ const Header = ()=>{
               
                     <h1>Welcome {logindata.ValidUserOne? logindata.ValidUserOne.fname: "Techie"}</h1>
                     <Avatar style={{background:"#3474bd"}} onClick={handleClick}/>
-                 
-                    
+
                     <Menu
                         id="basic-menu"
                         anchorEl={anchorEl}

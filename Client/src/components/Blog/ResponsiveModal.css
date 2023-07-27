@@ -1,0 +1,59 @@
+.react-responsive-modal-modal { 
+    max-width: 650px;
+    max-height: 270px;
+    /* overflow: hidden; */
+    /* width: "600px" !important;
+    height: "150px" !important; */
+}
+
+.modal-footer{
+    padding: 6px 2px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.txt{
+    padding: 16px;
+  text-align: center;
+}
+
+.alert-danger {
+    
+  margin-top: 3px;
+   
+}
+/* Set a style for all buttons */
+.btn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 14px 10px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  
+  button:hover {
+    opacity:2;
+  }
+
+  /* Float cancel and delete buttons and add an equal width */
+.cancelbtn, .deletebtn {
+    float: left;
+    width: 50%;
+  }
+  
+  /* Add a color to the cancel button */
+.cancelbtn {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  /* Add a color to the delete button */
+  .deletebtn {
+    background-color: #f44336;
+  }
+  
+

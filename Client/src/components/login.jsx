@@ -45,9 +45,9 @@ const Login = ()=>{
                 position: "top-center"
             });
         }
-        else{
+        else{  
             // console.log("User registration successfully done");
-            const data = await fetch("https://technical-space-w69w.vercel.app/login",{
+            const data = await fetch("http://localhost:8000/login",{
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

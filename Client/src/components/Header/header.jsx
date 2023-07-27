@@ -42,7 +42,7 @@ function Header() {
   const DashboardValid = async () => {
     let token = localStorage.getItem("usersdatatoken");
 
-    const res = await fetch("https://technical-space-w69w.vercel.app/validuser", {
+    const res = await fetch("http://localhost:8000/validuser", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -85,7 +85,7 @@ useEffect(() => {
          user: logindata ? logindata.ValidUserOne.fname : "",
       };
       await axios
-        .post("https://technical-space-w69w.vercel.app/questions", body, config)
+        .post("http://localhost:8000/questions", body, config)
         .then((res) => {
           console.log(res.data);
           alert(res.data.message);
@@ -104,7 +104,7 @@ useEffect(() => {
     <div className="qHeader-content">
       <div className="qHeader__logo">
         <img
-          src="https://video-public.canva.com/VAD8lt3jPyI/v/ec7205f25c.gif"
+          src="/rm373batch4-67.gif"
           alt="logo"
         />
       </div>

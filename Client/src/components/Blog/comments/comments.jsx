@@ -1,8 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
 import { Box, TextareaAutosize, Button, styled } from '@mui/material';
-
-
-import  {LoginContext}  from "../../ContextProvider/Context";
+import Avatar from '@mui/material/Avatar';
+import axios from "axios";
+import { LoginContext } from '../../ContextProvider/Context';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // import { API } from '../../../service/api';
 
@@ -12,6 +14,7 @@ import Comment from './comment';
 const Container = styled(Box)`
     margin-top: 100px;
     display: flex;
+    
 `;
 
 const Image = styled('img')({
@@ -20,10 +23,12 @@ const Image = styled('img')({
     borderRadius: '50%'
 });
 
-const StyledTextArea = styled(TextareaAutosize)`
+const StyledTextArea = styled()`
     height: 100px !important;
-    width: 100%; 
+    width: 100% !important; 
     margin: 0 20px;
+    padding: 10px 10px !important;
+    
 `;
 
 const initialValue = {
@@ -35,18 +40,23 @@ const initialValue = {
 
 const Comments = ({ post }) => {
     const url = 'https://static.thenounproject.com/png/12017-200.png'
-
+    let token = localStorage.getItem("usersdatatoken");
     const [comment, setComment] = useState(initialValue);
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState(["first"]);
     const [toggle, setToggle] = useState(false);
-
-    const { account } = useContext(DataContext);
+    const {logindata, setLoginData} = useContext(LoginContext);
+    // const { account } = useContext(DataContext);
 
     useEffect(() => {
         const getData = async () => {
-            const response = await API.getAllComments(post._id);
-            if (response.isSuccess) {
-                setComments(response.data);
+            const id = post._id;
+            let response = await fetch(`http://localhost:8000/comments/${id}` ,{method: 'GET',headers:{ id : id ,"Content-Type": "application/json",
+            "Authorization": token }});
+             const data = await response.json();
+             console.log(data);
+            // const response = await API.getAllComments(post._id);
+            if (response.ok) {
+                setComments(data);
             }
         }
         getData();
@@ -55,14 +65,36 @@ const Comments = ({ post }) => {
     const handleChange = (e) => {
         setComment({
             ...comment,
-            name: account.username,
+            name: logindata.ValidUserOne.fname,
             postId: post._id,
+            date: new Date(),
             comments: e.target.value
         });
     }
 
     const addComment = async() => {
-        await API.newComment(comment);
+        const config = {
+            headers: {
+               "Content-Type": "application/json",
+              "Authorization": token
+            },
+          };
+          const body = {
+           comment
+          };
+
+        await axios
+        .post("http://localhost:8000/comment/new", comment, config)
+        .then((res) => {
+          toast.success("Comment Added Sucessfully",{ autoClose: 2000});
+           console.log(res)
+        })
+        .catch((e) => {
+          console.log(e);
+          toast.error("Error in adding Comment")
+          //alert("Error in adding post");
+        });;
+
         setComment(initialValue)
         setToggle(prev => !prev);
     }
@@ -70,7 +102,7 @@ const Comments = ({ post }) => {
     return (
         <Box>
             <Container>
-                <Image src={url} alt="dp" />   
+                <Avatar/>  
                 <StyledTextArea 
                     rowsMin={5} 
                     placeholder="what's on your mind?"
@@ -83,7 +115,8 @@ const Comments = ({ post }) => {
                     size="medium" 
                     style={{ height: 40 }}
                     onClick={(e) => addComment(e)}
-                >Post</Button>             
+                >Post</Button>   
+                <ToastContainer/>          
             </Container>
             <Box>
                 {

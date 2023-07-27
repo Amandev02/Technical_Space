@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import { Box, styled, TextareaAutosize, Button, FormControl, InputBase } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import { API } from '../../service/api';
 
 const Container = styled(Box)(({ theme }) => ({
@@ -42,17 +44,18 @@ const StyledTextArea = styled(TextareaAutosize)`
 `;
 
 const initialPost = {
+    _id: '',
     title: '',
     description: '',
     picture: '',
-    username: 'Aman',
-    categories: 'Tech',
+    username: '',
+    categories: 'ALL',
     createdDate: new Date()
 }
 
 const Update = () => {
     const navigate = useNavigate();
-
+    let token = localStorage.getItem("usersdatatoken");
     const [post, setPost] = useState(initialPost);
     const [file, setFile] = useState('');
     const [imageURL, setImageURL] = useState('');
@@ -63,9 +66,22 @@ const Update = () => {
     
     useEffect(() => {
         const fetchData = async () => {
-            let response = await API.getPostById(id);
-            if (response.isSuccess) {
-                setPost(response.data);
+            // let response = await fetch('http://localhost:8000/blog/details'+'/'+ id ,{method: 'GET',headers:{ id : id || '' }});
+            const response = await fetch("http://localhost:8000/post"+'/'+ id , {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            });
+            
+            // console.log(response.isSuccess);
+            const data = await response.json();
+            console.log(data);
+            // let response = await API.getPostById(id);
+            if (response.ok) {
+                console.log(data);
+                setPost(data);
             }
         }
         fetchData();
@@ -89,8 +105,18 @@ const Update = () => {
     }, [file])
 
     const updateBlogPost = async () => {
-        await API.updatePost(post);
-        navigate(`/details/${id}`);
+        const config = {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": token
+            },
+          };
+        //   console.log(post);
+        await axios.put(`http://localhost:8000/update/${id}`,post,{config})
+        // await API.updatePost(post); 
+        navigate(`/blog/details/${id}`)
+       
+        //   console.log(post);
     }
 
     const handleChange = (e) => {

@@ -2,8 +2,10 @@ const express = require('express');
 const router = new express.Router();
 const userdb = require("../models/userSchema");
 const Post = require("../models/BlogPost");
+const Comment = require('../models/Comment.js');
 const bcrypt = require("bcryptjs");
 const authenticate = require("../middleware/authenticate");
+
 // <<<<<<< master
 
 // =======
@@ -145,7 +147,7 @@ router.post("/create", authenticate, async (req, res) => {
 
 });
 
-router.put('/update/:id', authenticate, async (request, response) => {
+router.put('/update/:id', async (request, response) => {
     try {
         const post = await Post.findById(request.params.id);
 
@@ -153,9 +155,11 @@ router.put('/update/:id', authenticate, async (request, response) => {
             response.status(404).json({ msg: 'Post not found' })
         }
         
-        await Post.findByIdAndUpdate( request.params.id, { $set: request.body })
-
-        response.status(200).json('post updated successfully');
+        // console.log(post);
+        // console.log(request.body);
+        await Post.findByIdAndUpdate( request.params.id, {$set : request.body },  {new: true});
+       
+        response.status(200).json('Post updated successfully');
     } catch (error) {
         response.status(500).json(error);
     }
@@ -163,12 +167,14 @@ router.put('/update/:id', authenticate, async (request, response) => {
 
 router.delete('/delete/:id', async (request, response) => {
     try {
-        const post = await Post.findById(request.params.id);
-        
-        await post.delete()
+        const post = await Post.findByIdAndDelete(request.params.id);
+        console.log(post);
+        console.log('check');
+        // await post.delete()
 
         response.status(200).json('post deleted successfully');
     } catch (error) {
+        console.log(error);
         response.status(500).json(error)
     }
 });
@@ -202,5 +208,70 @@ router.get('/posts', async (request, response) => {
     }
 });
 
+
+// router.post('/file/upload', upload.single('file'), uploadImage);
+// router.get('/file/:filename', getImage);
+
+
+router.post('/comment/new',  async (request, response) => {
+
+    try {
+        await Comment
+          .create({
+            name: request.body.name,
+            postId: request.body.postId,
+            date: request.body.date,
+            comments: request.body.comments
+          })
+          .then(() => {
+           // alert("post added successfully");
+            response.status(201).send({
+              status: true,
+              message: "comment Added successfully",
+            });
+          })
+          .catch((e) => {
+        // console.log(req.body);
+            response.status(400).send({
+              status: false,
+              message: "Bad request",
+            });
+          });
+      } catch (e) {
+        response.status(500).send({
+          status: false,
+          message: "Error while adding comment",
+        });
+      }
+});
+
+
+router.get('/comments/:id', async (request, response) => {
+    try {
+        const comments = await Comment.find({ postId: request.params.id });
+        
+        response.status(200).json(comments);
+    } catch (error) {
+        response.status(500).json(error)
+    }
+});
+
+
+router.delete('/comment/delete/:id',  async (request, response) => {
+    try {
+       // const post = await Post.findByIdAndDelete(request.params.id);
+       console.log(request);
+        const comment = await Comment.findByIdAndDelete(request.params.id);
+        // await comment.delete()
+       
+        response.status(200).json('comment deleted successfully');
+    } catch (error) {
+   
+        response.status(500).send({
+            status: false,
+            message: "Error while deleting comment",
+          });
+    }
+});
 
 module.exports = router;

@@ -2,9 +2,10 @@ import { useContext } from "react";
 
 import { Typography, Box, styled } from "@mui/material";
 import { Delete } from '@mui/icons-material';
-
-// import { API } from '../../../service/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import  {LoginContext}  from "../../ContextProvider/Context";
+import axios from "axios";
 
 const Component = styled(Box)`
     margin-top: 30px;
@@ -36,10 +37,25 @@ const Comment = ({ comment, setToggle }) => {
 
     // const { account } = useContext(DataContext)
     const { logindata, setLoginData } = useContext(LoginContext);
-    
+    let token = localStorage.getItem("usersdatatoken");
+
     const removeComment = async () => {
-       await API.deleteComment(comment._id);
+
+        const id = comment._id;
+        const res = await axios.delete(`http://localhost:8000/comment/delete/${comment._id}`, { 
+            headers: {
+                "Authorization": token
+            }
+        });
+
+      if(res.status === 200){
+       toast.success("The Comment was deleted successfully",{ autoClose: 2000});
        setToggle(prev => !prev);
+       }
+       else{
+        toast.success("Error while deleting comment",{ autoClose: 2000});
+       }
+
     }
 
     return (
@@ -47,7 +63,8 @@ const Comment = ({ comment, setToggle }) => {
             <Container>
                 <Name>{comment.name}</Name>
                 <StyledDate>{new Date(comment.date).toDateString()}</StyledDate>
-                { comment.name === logindata.ValidUserOne.fname && <DeleteIcon onClick={() => removeComment()} /> }
+                { comment.name === logindata.ValidUserOne.fname && <DeleteIcon style={{cursor: 'pointer'}} onClick={() => removeComment()} color="error" /> }
+                <ToastContainer/>
             </Container>
             <Typography>{comment.comments}</Typography>
         </Component>
