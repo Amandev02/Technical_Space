@@ -7,10 +7,6 @@ const BlogSchema = new mongoose.Schema({
         type: Date,
         default: Date.now()
     }
-    // answer: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref:"Answers"
-    // }
 
 })
 

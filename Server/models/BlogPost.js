@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {ObjectId} = mongoose.Schema.Types
 
 const PostSchema = mongoose.Schema({
     title: {
@@ -24,7 +25,8 @@ const PostSchema = mongoose.Schema({
     },
     createdDate: {
         type: Date
-    }
+    },
+    likes: [{type:ObjectId,ref:"User"}]
 });
 
 
